@@ -42,7 +42,7 @@ model_ai = models_ai[selected_model]
 client = OpenAI()
 
 # Database setup
-DB_FILE = "cerebro.db"
+DB_FILE = "cerebro/cerebro.db"
 
 def create_db():
     conn = sqlite3.connect(DB_FILE)
@@ -75,7 +75,7 @@ def handle_message(update: Update, context: CallbackContext) -> None:
             download_file_func(update.message, context.bot.token)
             context.bot.send_message(update.message.chat.id,"Mensagem de audio recebida!")
 
-            print("Transcribing audio file...")
+            print("Transcrevendo arquivo de audio...")
 
             audio_file= open("download.ogg", "rb")
 
@@ -97,14 +97,23 @@ def handle_message(update: Update, context: CallbackContext) -> None:
                 context.bot.send_message(update.message.chat.id,text=text)
                 idea_menu(update, context)
         
+        if update.message.text and not activate_visualiza:
+            text = "Olá, eu sou o Cérebro. Como posso te ajudar!"
+            context.bot.send_message(update.message.chat.id,text=text)
+
         if update.message.text and activate_visualiza:
             numero_ideia = update.message.text
             print("Ideia: " + numero_ideia)
             activate_visualiza = False
+            cursor = sqlite3.connect(DB_FILE).cursor()
+            cursor.execute("SELECT * FROM brainstorming") 
+            rows = cursor.fetchall()
+            for i, row in enumerate(rows):
+                if str(i+1) == numero_ideia:
+                    text = row[1]
+                    context.bot.send_message(update.message.chat.id,text=text)
+                    break
 
-        if update.message.text and not activate_visualiza:
-            text = "Olá, eu sou o Cérebro. Como posso te ajudar!"
-            context.bot.send_message(update.message.chat.id,text=text)
     
 
 def brainstorm(update, context, ideia):
@@ -172,7 +181,7 @@ def lista(update: Update, context: CallbackContext) -> None:
     if len(rows) > 0:
         context.bot.send_message(update.message.chat_id, 'Ideias salvas:')
         for i, row in enumerate(rows):
-            context.bot.send_message(update.message.chat_id, str(i) + "-" + str(row[2]))
+            context.bot.send_message(update.message.chat_id, str(i+1) + "-" + str(row[2]))
     else:
         context.bot.send_message(update.message.chat_id, 'Nenhuma ideia salva!')
 

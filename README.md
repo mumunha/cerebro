@@ -2,9 +2,9 @@
     <img src="img/cerebro.png" alt="alt text">
 </p>
 
-# Cérebro - Bot Telegram
+# Ceérebro - Bot Telegram
 
-Cérebro é um bot do Telegram projetado para atuar como um asisstente ou seu segundo cerebro por meio do processamento de linguagem natural e inteligência artificial. Ele utiliza a LLMs para interpretar entradas de voz e texto, facilitando uma experiência única para alavancar seu potencial. Ideal para criadores, escritores e qualquer pessoa que deseje explorar e expandir suas ideias, o Cérebro atua como um parceiro usando ferramenta de inteligência artificial.
+Cerebro é um bot do Telegram que tem o objetigo de ser seu segundo cerebro por meio do processamento de linguagem natural e inteligência artificial. Ele utiliza a LLMs para interpretar entradas de voz e texto, facilitando uma experiência única para alavancar seu potencial. Ideal para criadores, escritores e qualquer pessoa que deseje explorar e expandir suas ideias, o Cérebro atua como um parceiro usando ferramenta de inteligência artificial.
 
 ## Descrição
 
@@ -39,7 +39,7 @@ Siga os passos na seção de Configuração para clonar o projeto, instalar depe
 
 ### Configuração
 
-1. **Clone o Projeto**: Clone ou baixe os arquivos do projeto para sua máquina local.
+1. **Copie os arquivos do projeto**: Baixe os arquivos projeto para sua máquina local e salve em uma pasta.
 ```sh
 git clone https://github.com/mumunha/cerebro.git
 ```
@@ -89,7 +89,7 @@ Execute `cerebro.py` para iniciar o bot:
 ```sh
 python cerebro.py
 ```
-Isso ativará o Cérebro na sua conta do Telegram, pronto para receber e processar suas entradas.
+Isso ativará o Cerebro na sua conta do Telegram, pronto para receber e processar suas entradas. Da primeira vez que você tentar conversar com o Cerebro ele não identificará você.
 
 ## Uso
 
@@ -97,9 +97,15 @@ Isso ativará o Cérebro na sua conta do Telegram, pronto para receber e process
 - **Entrada de Texto**: Envie mensagens de texto para ideias rápidas ou comandos para gerenciar suas sessões de ideias.
 - **Sessões de Brainstorming**: Siga as instruções do bot para explorar e expandir suas ideias.
 
+## Ideias para implementação futura
+
+- **Gestão de aniversários**: Sempre esqueço de algumas datas, gostaria de ajuda pra me lembrar e eventualmente escrever mensagens personalizadas
+- **Adicionar elementos às ideias existentes**: Permitir ao usuário complementar elementos às ideias existentes
+- **Incorporar agentes (crewAI) para realização de tarefas específicas**
+
 ## Contribuindo
 
-Contribuições para o Cérebro são bem-vindas! Faça um fork do repositório e submeta um pull request com suas melhorias.
+Contribuições para o Cerebro são bem-vindas! Faça um fork do repositório e submeta um pull request com suas melhorias.
 
 ## Licença
 
