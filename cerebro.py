@@ -22,6 +22,7 @@ activate_visualiza = False
 
 # Menus
 IDEA_MENU = "<b>Ideia identificada!</b>\nVocê gostaria de fazer um brainstorm dessa ideia?"
+VER_BRAINSTORMING = "Você gostaria de ver o brainstorming?"
 
 SIM_BUTTON = "Sim"
 NAO_BUTTON = "Não"
@@ -29,6 +30,11 @@ NAO_BUTTON = "Não"
 IDEA_MENU_MARKUP = InlineKeyboardMarkup([
     [InlineKeyboardButton(SIM_BUTTON, callback_data=SIM_BUTTON)],
     [InlineKeyboardButton(NAO_BUTTON, callback_data=NAO_BUTTON)]
+])
+
+VER_BRAINSTORMING_MENU_MARKUP = InlineKeyboardMarkup([
+    [InlineKeyboardButton(SIM_BUTTON, callback_data="SIM_VER_BRAINSTORMING")],
+    [InlineKeyboardButton(NAO_BUTTON, callback_data="NAO_VER_BRAINSTORMING")]
 ])
 
 # modelo a ser usado e custo por 1 milhão de tokens input e output
@@ -61,7 +67,7 @@ def insert_brainstorming(idea,resumo,answer):
     conn.close()
 
 def handle_message(update: Update, context: CallbackContext) -> None:
-    global activate_visualiza
+    global activate_visualiza, numero_ideia
     # print(update.message)
     if update.message.from_user.id not in MY_CHAT_ID:
         text = "Você não está autorizado a usar esse bot."
@@ -113,6 +119,7 @@ def handle_message(update: Update, context: CallbackContext) -> None:
                     text = row[1]
                     context.bot.send_message(update.message.chat.id,text=text)
                     break
+            ver_brainstorm_menu(update, context)
 
     
 
@@ -161,6 +168,9 @@ def start(update: Update, context: CallbackContext) -> None:
     else:
         chat_id = update.message.chat_id
     
+    with open('cerebro/img/cerebro.png', 'rb') as photo_file:
+        context.bot.send_photo(chat_id=chat_id, photo=photo_file)
+
     texto = """<b>Seja bem vindo ao Cerebro!</b>
 ---------------------------------
 Comandos:
@@ -198,15 +208,39 @@ def idea_menu(update: Update, context: CallbackContext) -> None:
         reply_markup=IDEA_MENU_MARKUP
     )
 
+def ver_brainstorm_menu(update: Update, context: CallbackContext) -> None: 
+    context.bot.send_message(
+        update.message.from_user.id,
+        VER_BRAINSTORMING,
+        parse_mode=ParseMode.HTML,
+        reply_markup=VER_BRAINSTORMING_MENU_MARKUP
+    )
+
+def ver_brainstorm(update: Update, context: CallbackContext) -> None:
+    chat_id = update.callback_query.message.chat_id
+    global numero_ideia
+    cursor = sqlite3.connect(DB_FILE).cursor()
+    cursor.execute("SELECT * FROM brainstorming") 
+    rows = cursor.fetchall()
+    for i, row in enumerate(rows):
+        if str(i+1) == numero_ideia:
+            text = row[3]
+            context.bot.send_message(chat_id=chat_id, text=text)
+            break
+
 def button_tap(update: Update, context: CallbackContext) -> None:
     global ideia, resumo
     data = update.callback_query.data
     text = ''
     markup = None
-
+    print("Button pressed: " + data)
     if data == SIM_BUTTON:
         start_brainstorm = True
     elif data == NAO_BUTTON:
+        pass
+    elif data == "SIM_VER_BRAINSTORMING":
+        ver_brainstorm(update, context)
+    elif data == "NAO_VER_BRAINSTORMING":
         pass
         
     update.callback_query.message.edit_text("Concluido!")
