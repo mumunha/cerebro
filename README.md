@@ -37,9 +37,6 @@ Principais Características já implementadas:
 
 Siga os passos na seção de Configuração para clonar o projeto, instalar dependências e configurar seu ambiente.
 
-## Configuração
-
-- **Download**:
 ### Configuração
 
 1. **Clone o Projeto**: Clone ou baixe os arquivos do projeto para sua máquina local.
@@ -60,12 +57,22 @@ python3 -m venv env
 source env/bin/activate
 ```
 Windows:
-```sh
-cmd
-python -m venv env
-.\\env\\Scripts\\activate
-```
 
+No prompt de comando ou no terminal do vscode.
+
+Crie o ambiente virtual
+```sh
+python -m venv venv
+```
+Ative o ambiente virtual
+Se for no <b>vscode</b> ou <b>PowerShell</b>
+```sh
+.\venv\Scripts\Activate.ps1
+```
+Se for no <b>prompt de comando</b>
+```sh
+.\venv\Scripts\activate.bat
+```
 4. **Instale as Dependências**: Instale os requisitos do projeto.
 
 ```sh

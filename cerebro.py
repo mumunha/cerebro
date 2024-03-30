@@ -34,7 +34,7 @@ IDEA_MENU_MARKUP = InlineKeyboardMarkup([
 # modelo a ser usado e custo por 1 milhão de tokens input e output
 models_ai = [
             ["openai","gpt-3.5-turbo", 0.50, 1,50,OPENAI_API_KEY ], 
-            ["togetherai","gpt-3.5-turbo", 0.50, 1.50, TOGETHER_API_KEY]
+            ["togetherai","NousResearch/Nous-Hermes-Llama2-13b", 0.30, 0.30, TOGETHER_API_KEY]
             ]
 selected_model = 0
 model_ai = models_ai[selected_model]
@@ -90,7 +90,7 @@ def handle_message(update: Update, context: CallbackContext) -> None:
 
             print(resultado)
 
-            if resultado[0] == "IDEIA":
+            if (resultado[0].lower()) == "ideia":
                 text = "Ideia identificada!"
                 context.bot.send_message(update.message.chat.id,text=text)
                 text = resultado[1]
@@ -119,9 +119,9 @@ def brainstorm(update, context, ideia):
         messages=[ {"role": "system", "content": prompt},] 
     )
 
-    cost = response.usage.completion_tokens * model_ai[3] / 1E6 + response.usage.prompt_tokens * model_ai[2] / 1E6
-    cost = "{:.10f}".format(cost)
-    print("Cost: " + (cost))	
+    custo = response.usage.completion_tokens * model_ai[3] / 1E6 + response.usage.prompt_tokens * model_ai[2] / 1E6
+    custo = "{:.10f}".format(custo)
+    print("Custo: " + (custo))	
     resultado = response.choices[0].message.content
     context.bot.send_message(chat_id=chat_id, text=resultado)
     return resultado
@@ -139,10 +139,10 @@ def parse_message(message):
     print(response_array[0])
     ideia = response_array[1]
     resumo = response_array[2]
-    cost = response.usage.completion_tokens * model_ai[3] / 1E6 + response.usage.prompt_tokens * model_ai[2] / 1E6
+    custo = response.usage.completion_tokens * model_ai[3] / 1E6 + response.usage.prompt_tokens * model_ai[2] / 1E6
     # format to decimal
-    cost = "{:.10f}".format(cost)
-    print("Cost: " + (cost))	
+    custo = "{:.10f}".format(custo)
+    print("Custo: " + (custo))	
 
     return response_array
 
