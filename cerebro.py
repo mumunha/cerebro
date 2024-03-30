@@ -2,7 +2,7 @@ import logging
 import os
 from download_file import download_file_func
 from openai  import OpenAI
-from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
 import sqlite3
 from datetime import datetime
@@ -73,7 +73,7 @@ def handle_message(update: Update, context: CallbackContext) -> None:
 
         if update.message.voice is not None or update.message.audio is not None:
             download_file_func(update.message, context.bot.token)
-            context.bot.send_message(update.message.chat.id,f"Audio message downloaded!")
+            context.bot.send_message(update.message.chat.id,"Mensagem de audio recebida!")
 
             print("Transcribing audio file...")
 

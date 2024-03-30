@@ -19,7 +19,7 @@ def download_file_func(message, token):
     response = requests.get(download_url)
 
     # Save the file locally
-    local_file_path = f"download.ogg"  # Specify your desired file path
+    local_file_path = "download.ogg"  # Specify your desired file path
     with open(local_file_path, 'wb') as file:
         file.write(response.content)
 
