@@ -212,7 +212,6 @@ def ver_brainstorm_menu(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(
         update.message.from_user.id,
         VER_BRAINSTORMING,
-        parse_mode=ParseMode.HTML,
         reply_markup=VER_BRAINSTORMING_MENU_MARKUP
     )
 
@@ -229,7 +228,7 @@ def ver_brainstorm(update: Update, context: CallbackContext) -> None:
             break
 
 def button_tap(update: Update, context: CallbackContext) -> None:
-    global ideia, resumo
+    global ideia, resumo, start_brainstorm
     data = update.callback_query.data
     text = ''
     markup = None
