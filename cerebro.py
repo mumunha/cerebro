@@ -12,7 +12,6 @@ import secrets_cerebro
 # Variáveis de ambiente
 TELEGRAM_API_KEY = secrets_cerebro.TELEGRAM_API_KEY
 MY_CHAT_ID = secrets_cerebro.MY_CHAT_ID
-TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 logger = logging.getLogger(__name__)
@@ -40,7 +39,6 @@ VER_BRAINSTORMING_MENU_MARKUP = InlineKeyboardMarkup([
 # modelo a ser usado e custo por 1 milhão de tokens input e output
 models_ai = [
             ["openai","gpt-3.5-turbo", 0.50, 1,50,OPENAI_API_KEY ], 
-            ["togetherai","NousResearch/Nous-Hermes-Llama2-13b", 0.30, 0.30, TOGETHER_API_KEY]
             ]
 selected_model = 0
 model_ai = models_ai[selected_model]
