@@ -12,7 +12,7 @@ import secrets_cerebro
 # Variáveis de ambiente
 TELEGRAM_API_KEY = secrets_cerebro.TELEGRAM_API_KEY
 MY_CHAT_ID = secrets_cerebro.MY_CHAT_ID
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+OPENAI_API_KEY = secrets_cerebro.OPENAI_API_KEY
 
 logger = logging.getLogger(__name__)
 
@@ -43,10 +43,13 @@ models_ai = [
 selected_model = 0
 model_ai = models_ai[selected_model]
 
-client = OpenAI()
+if OPENAI_API_KEY is None:
+    print("OPENAI_API_KEY not found. Please set it in the secrets_cerebro.py file")
+else:
+    client = OpenAI()
 
 # Database setup
-DB_FILE = "cerebro/cerebro.db"
+DB_FILE = os.getcwd() + "/cerebro.db"
 
 def create_db():
     conn = sqlite3.connect(DB_FILE)
@@ -262,7 +265,11 @@ def button_tap(update: Update, context: CallbackContext) -> None:
 def main() -> None:
     create_db()
 
-    updater = Updater(TELEGRAM_API_KEY)
+    if TELEGRAM_API_KEY is None:
+        print("TELEGRAM_API_KEY not found. Please set it in the secrets_cerebro.py file")
+        exit(1)
+    else:
+        updater = Updater(TELEGRAM_API_KEY)
 
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
