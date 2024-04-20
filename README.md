@@ -49,7 +49,7 @@ Crie o ambiente virtual:
 
 Se você tiver várias versões do Python, use o seguinte comando (substitua USERNAME pelo seu usuário):
 ```sh
-C:\Users\'USERNAME'\AppData\Local\Programs\Python\Python310\python
+C:\Users\USERNAME\AppData\Local\Programs\Python\Python310\python -m venv venv
 ```
 
 ```sh
