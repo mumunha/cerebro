@@ -20,7 +20,7 @@ Principais Características já implementadas:
 
 ### Pré-requisitos
 
-- Python 3.10 ou superior
+- Python 3.10.7 (se você tiver outra versão instalada, instale essa e selecione essa versão para o ambiente virtual)
 - Uma conta no Telegram
 
 ### Configuração
@@ -44,7 +44,14 @@ Windows:
 
 No prompt de comando ou no terminal do vscode.
 
-Crie o ambiente virtual
+Crie o ambiente virtual:
+
+
+Se você tiver várias versões do Python, use o seguinte comando (substitua USERNAME pelo seu usuário):
+```sh
+C:\Users\'USERNAME'\AppData\Local\Programs\Python\Python310\python
+```
+
 ```sh
 python -m venv venv
 ```
