@@ -1,7 +1,7 @@
 import logging
 import os
 from download_file import download_file_func
-from openai  import OpenAI
+import openai
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
 import sqlite3
@@ -46,7 +46,9 @@ model_ai = models_ai[selected_model]
 if OPENAI_API_KEY is None:
     print("OPENAI_API_KEY not found. Please set it in the secrets_cerebro.py file")
 else:
-    client = OpenAI()
+    # client = openai.OpenAI()
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
+    
 
 # Database setup
 DB_FILE = os.getcwd() + "/cerebro.db"
@@ -169,37 +171,59 @@ def start(update: Update, context: CallbackContext) -> None:
     else:
         chat_id = update.message.chat_id
     
-    with open('cerebro/img/cerebro.png', 'rb') as photo_file:
-        context.bot.send_photo(chat_id=chat_id, photo=photo_file)
+    if update.message.from_user.id not in MY_CHAT_ID:
+        text = "Você não está autorizado a usar esse bot."
+        context.bot.send_message(update.message.chat.id,text=text)
+        print("ID do usuario nao autorizado: " + str(update.message.from_user.id))
+        print("Username do usuario nao autorizado: " + str(update.message.from_user.username))
 
-    texto = """<b>Seja bem vindo ao Cerebro!</b>
+    else:
+        with open(os.getcwd() +'/img/cerebro.png', 'rb') as photo_file:
+            context.bot.send_photo(chat_id=chat_id, photo=photo_file)
+
+            texto = """<b>Seja bem vindo ao Cerebro!</b>
 ---------------------------------
 Comandos:
 /lista - lista as ideias salvas
 /visualizar - mostra o brainstorm
 ---------------------------------
     """
-    context.bot.send_message(chat_id=chat_id, text=texto, parse_mode=ParseMode.HTML)
+            context.bot.send_message(chat_id=chat_id, text=texto, parse_mode=ParseMode.HTML)
 
 
 def lista(update: Update, context: CallbackContext) -> None:
-    # retrieve all rows from the table sqlite brainstorm
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM brainstorming")
-    rows = cursor.fetchall()
+    if update.message.from_user.id not in MY_CHAT_ID:
+        text = "Você não está autorizado a usar esse bot."
+        context.bot.send_message(update.message.chat.id,text=text)
+        print("ID do usuario nao autorizado: " + str(update.message.from_user.id))
+        print("Username do usuario nao autorizado: " + str(update.message.from_user.username))
 
-    if len(rows) > 0:
-        context.bot.send_message(update.message.chat_id, 'Ideias salvas:')
-        for i, row in enumerate(rows):
-            context.bot.send_message(update.message.chat_id, str(i+1) + "-" + str(row[2]))
     else:
-        context.bot.send_message(update.message.chat_id, 'Nenhuma ideia salva!')
+
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM brainstorming")
+        rows = cursor.fetchall()
+
+        if len(rows) > 0:
+            context.bot.send_message(update.message.chat_id, 'Ideias salvas:')
+            for i, row in enumerate(rows):
+                context.bot.send_message(update.message.chat_id, str(i+1) + "-" + str(row[2]))
+        else:
+            context.bot.send_message(update.message.chat_id, 'Nenhuma ideia salva!')
 
 def visualizar(update: Update, context: CallbackContext) -> None:
     global activate_visualiza
-    context.bot.send_message(update.message.chat_id, 'Qual o numero da ideia que deseja visualizar?')
-    activate_visualiza = True
+    
+    if update.message.from_user.id not in MY_CHAT_ID:
+        text = "Você não está autorizado a usar esse bot."
+        context.bot.send_message(update.message.chat.id,text=text)
+        print("ID do usuario nao autorizado: " + str(update.message.from_user.id))
+        print("Username do usuario nao autorizado: " + str(update.message.from_user.username))
+
+    else:
+        context.bot.send_message(update.message.chat_id, 'Qual o numero da ideia que deseja visualizar?')
+        activate_visualiza = True
    
 def idea_menu(update: Update, context: CallbackContext) -> None: 
     context.bot.send_message(
